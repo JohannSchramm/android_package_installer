@@ -1,4 +1,3 @@
-///Package installer result status
 enum PackageInstallerStatus {
   //TODO: maybe will use with event channel
   // pendingUserAction(-1),
@@ -21,5 +20,21 @@ enum PackageInstallerStatus {
       PackageInstallerStatus.values.firstWhere(
         (e) => e.code == code,
         orElse: () => PackageInstallerStatus.unknown,
+      );
+}
+
+class AppInstallResult {
+  const AppInstallResult({
+    required this.packageName,
+    required this.status,
+  });
+
+  final String? packageName;
+  final PackageInstallerStatus status;
+
+  static AppInstallResult fromMap(Map<dynamic, dynamic> map) => 
+      AppInstallResult(
+        packageName: map['package'] as String?,
+        status: PackageInstallerStatus.byCode(map['code'] as int),
       );
 }

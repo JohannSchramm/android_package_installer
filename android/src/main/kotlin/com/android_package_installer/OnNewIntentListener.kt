@@ -22,7 +22,8 @@ internal class OnNewIntentListener(private var activity: Activity?) : PluginRegi
                 }
 
                 else -> {
-                    MethodCallHandler.resultSuccess(status)
+                    val str = extras.getString(PackageInstaller.EXTRA_PACKAGE_NAME)
+                    MethodCallHandler.resultSuccess(Pair(status, str))
                 }
             }
         }

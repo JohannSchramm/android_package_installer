@@ -17,6 +17,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _installationStatus = '';
+  String _installationName = '';
   final TextEditingController _filePathFieldController = TextEditingController(text: '');
 
   @override
@@ -57,15 +58,19 @@ class _MyAppState extends State<MyApp> {
                   const SizedBox(height: 10),
                   Text('PackageManager installation status: $_installationStatus'),
                   const SizedBox(height: 30),
+                  Text('PackageManager installation name: $_installationName'),
+                  const SizedBox(height: 30),
                   _button('Install apk file', () async {
                     if (_filePathFieldController.text.isNotEmpty) {
                       setState(() {
                         _installationStatus = '';
+                        _installationName = '';
                       });
                       try {
-                        final status = await AndroidPackageInstaller.installApk(apkFilePath: _filePathFieldController.text);
+                        final result = await AndroidPackageInstaller.installApk(apkFilePath: _filePathFieldController.text);
                           setState(() {
-                            _installationStatus = status.name;
+                            _installationStatus = result.status.name;
+                            _installationName = result.packageName ?? '';
                           });
                       } on PlatformException {
                         print('Error at Platform. Failed to install apk file.');

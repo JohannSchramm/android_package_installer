@@ -6,8 +6,8 @@ import io.flutter.plugin.common.MethodChannel
 internal class MethodCallHandler(private val installer: Installer) : MethodChannel.MethodCallHandler {
     companion object {
         lateinit var callResult: MethodChannel.Result
-        fun resultSuccess(data: Any) {
-            callResult.success(data)
+        fun resultSuccess(data: Pair<Int, String?>) {
+            callResult.success(mapOf("code" to data.first, "package" to data.second))
         }
 
         fun nothing() {
@@ -29,7 +29,7 @@ internal class MethodCallHandler(private val installer: Installer) : MethodChann
                     val apkFilePath = call.arguments.toString()
                     installer.installPackage(apkFilePath)
                 } catch (e: Exception) {
-                    resultSuccess(installStatusUnknown)
+                    resultSuccess(Pair(installStatusUnknown, null))
                 }
             }
             else -> {

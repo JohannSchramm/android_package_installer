@@ -1,3 +1,4 @@
+import 'package:android_package_installer/src/install_result.dart';
 import 'package:android_package_installer/src/method_channel.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
@@ -16,7 +17,5 @@ abstract class AndroidPackageInstallerPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<int?> installApk(String path) {
-    throw UnimplementedError('installApk() has not been implemented.');
-  }
+  Future<AppInstallResult> installApk(String path);
 }

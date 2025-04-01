@@ -63,13 +63,10 @@ class _MyAppState extends State<MyApp> {
                         _installationStatus = '';
                       });
                       try {
-                        int? code = await AndroidPackageInstaller.installApk(apkFilePath: _filePathFieldController.text);
-                        print('Installation code: $code');
-                        if (code != null) {
+                        final status = await AndroidPackageInstaller.installApk(apkFilePath: _filePathFieldController.text);
                           setState(() {
-                            _installationStatus = PackageInstallerStatus.byCode(code).name;
+                            _installationStatus = status.name;
                           });
-                        }
                       } on PlatformException {
                         print('Error at Platform. Failed to install apk file.');
                       }

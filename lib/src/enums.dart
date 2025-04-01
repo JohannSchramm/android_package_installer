@@ -12,19 +12,14 @@ enum PackageInstallerStatus {
   failureIncompatible(7),
   unknown(-2);
 
+  const PackageInstallerStatus(this.code);
+
   final int code;
 
   ///Get enum type by status code
-  static PackageInstallerStatus byCode(int code) {
-    PackageInstallerStatus status = PackageInstallerStatus.unknown;
-    try {
-      status = PackageInstallerStatus.values
-          .firstWhere((element) => (code == element.code));
-    } catch (_) {
-      return status;
-    }
-    return status;
-  }
-
-  const PackageInstallerStatus(this.code);
+  static PackageInstallerStatus byCode(int? code) =>
+      PackageInstallerStatus.values.firstWhere(
+        (e) => e.code == code,
+        orElse: () => PackageInstallerStatus.unknown,
+      );
 }

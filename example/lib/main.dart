@@ -64,6 +64,7 @@ class _MyAppState extends State<MyApp> {
                       });
                       try {
                         int? code = await AndroidPackageInstaller.installApk(apkFilePath: _filePathFieldController.text);
+                        print('Installation code: $code');
                         if (code != null) {
                           setState(() {
                             _installationStatus = PackageInstallerStatus.byCode(code).name;

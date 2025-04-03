@@ -48,4 +48,12 @@ class AndroidPackageInstaller {
       return await isAppInstalled(name);
     }
   }
+
+  /// Launches an installed app.
+  /// [packageName] - the package name of the app. Example: com.example.app
+  /// Returns true if the app was launched successfully, false otherwise.
+  static Future<bool> launchApp(String packageName) async {
+    final installer = AndroidPackageInstallerPlatform.instance;
+    return await installer.launchApp(packageName);
+  }
 }

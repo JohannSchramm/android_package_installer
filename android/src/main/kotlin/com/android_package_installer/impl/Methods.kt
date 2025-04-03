@@ -43,6 +43,11 @@ internal class CustomMethodCallHandler(private val installer: Installer, private
                 uninstaller.uninstallPackage(packageName)
                 result.success(true)
             }
+            "launchApp" -> {
+                val packageName = call.arguments.toString()
+                val launched = appinfo.launchApp(packageName)
+                result.success(launched)
+            }
             else -> {
                 nothing()
             }

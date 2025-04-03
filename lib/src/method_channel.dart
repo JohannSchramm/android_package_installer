@@ -33,4 +33,9 @@ class MethodChannelAndroidPackageInstaller extends AndroidPackageInstallerPlatfo
   Future<bool> isAppInstalled(String packageName) async {
     return await methodChannel.invokeMethod<bool>('isAppInstalled', packageName) ?? false;
   }
+
+  @override
+  Future<bool> launchApp(String packageName) async {
+    return await methodChannel.invokeMethod<bool>('launchApp', packageName) ?? false;
+  }
 }

@@ -119,6 +119,19 @@ class _MyAppState extends State<MyApp> {
                       }
                     }
                   }),
+                  const SizedBox(height: 10),
+                  _button("Launch app", () async {
+                    if (_filePathFieldController.text.isNotEmpty) {
+                      try {
+                        final packageName = await AndroidPackageInstaller.getPackageNameFromApk(_filePathFieldController.text);
+                        if (packageName != null) {
+                          await AndroidPackageInstaller.launchApp(packageName);
+                        }
+                      } catch(e) {
+                        print('Error while launching');
+                      }
+                    }
+                  }),
                   const Spacer(),
                   SizedBox(
                     child: Column(children: [

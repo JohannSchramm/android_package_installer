@@ -33,5 +33,22 @@ internal class AppInfo(private val context: Context, private var activity: Activ
             ?.getPackageArchiveInfo(apkPath, 0)
             ?.packageName
     }
+
+    fun launchApp(packageName: String): Boolean {
+        val act = activity
+        if (act != null) {
+            try {
+                val manager = act.packageManager
+                val intent = manager.getLaunchIntentForPackage(packageName)
+                if (intent != null) {
+                    act.startActivity(intent)
+                    return true
+                }
+            } catch (e: Exception) {
+                return false
+            }
+        }
+        return false
+    }
 }
 

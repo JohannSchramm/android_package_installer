@@ -13,4 +13,32 @@ class AndroidPackageInstaller {
     final installer = AndroidPackageInstallerPlatform.instance;
     return await installer.installApk(apkFilePath);
   }
+
+  /// Returns the package name of the apk file.
+  /// [apkFilePath] - the path to the apk package file. Example: /sdcard/Download/app.apk
+  /// Returns the package name of the apk file.
+  static Future<String?> getPackageNameFromApk(String apkFilePath) async {
+    final installer = AndroidPackageInstallerPlatform.instance;
+    return await installer.getPackageNameFromApk(apkFilePath);
+  }
+
+  /// Checks if the app is installed on the device.
+  /// [packageName] - the package name of the app. Example: com.example.app
+  /// Returns true if the app is installed, false otherwise.
+  static Future<bool> isAppInstalled(String packageName) async {
+    final installer = AndroidPackageInstallerPlatform.instance;
+    return await installer.isAppInstalled(packageName);
+  }
+
+  /// Checks if the apk file is installed on the device.
+  /// [apkFilePath] - the path to the apk package file. Example: /sdcard/Download/app.apk
+  /// Returns true if the apk file is installed, false otherwise.
+  static Future<bool> isApkInstalled(String apkFilePath) async {
+    final name = await getPackageNameFromApk(apkFilePath);
+    if (name == null) {
+      return false;
+    } else {
+      return await isAppInstalled(name);
+    }
+  }
 }

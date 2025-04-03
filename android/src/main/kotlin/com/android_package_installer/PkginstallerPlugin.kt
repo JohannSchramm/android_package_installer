@@ -1,5 +1,6 @@
 package com.android_package_installer
 
+import com.android_package_installer.impl.AppInfo
 import com.android_package_installer.impl.CustomMethodCallHandler
 import com.android_package_installer.impl.Installer
 import com.android_package_installer.impl.OnNewIntentListener
@@ -16,26 +17,30 @@ var packageInstalledAction = "${packageName}.content.SESSION_API_PACKAGE_INSTALL
 /** PkginstallerPlugin */
 class PkginstallerPlugin : FlutterPlugin, ActivityAware {
     private lateinit var installer: Installer
+    private lateinit var appInfo: AppInfo
     private lateinit var channel: MethodChannel
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "android_package_installer")
         installer = Installer(flutterPluginBinding.applicationContext, null)
-        val handler = CustomMethodCallHandler(installer)
+        appInfo = AppInfo(flutterPluginBinding.applicationContext, null)
+        val handler = CustomMethodCallHandler(installer, appInfo)
         channel.setMethodCallHandler(handler)
-    }
-
-    override fun onAttachedToActivity(activityPluginBinding: ActivityPluginBinding) {
-        installer.setActivity(activityPluginBinding.activity)
-        activityPluginBinding.addOnNewIntentListener(OnNewIntentListener(activityPluginBinding.activity))
     }
 
     override fun onDetachedFromEngine(flutterPluginBinding: FlutterPluginBinding) {
         channel.setMethodCallHandler(null)
     }
 
+    override fun onAttachedToActivity(activityPluginBinding: ActivityPluginBinding) {
+        installer.setActivity(activityPluginBinding.activity)
+        appInfo.setActivity(activityPluginBinding.activity)
+        activityPluginBinding.addOnNewIntentListener(OnNewIntentListener(activityPluginBinding.activity))
+    }
+
     override fun onDetachedFromActivity() {
         installer.setActivity(null)
+        appInfo.setActivity(null)
     }
 
     override fun onDetachedFromActivityForConfigChanges() {

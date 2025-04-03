@@ -18,4 +18,8 @@ abstract class AndroidPackageInstallerPlatform extends PlatformInterface {
   }
 
   Future<AppInstallResult> installApk(String path);
+
+  Future<String?> getPackageNameFromApk(String path);
+
+  Future<bool> isAppInstalled(String packageName);
 }

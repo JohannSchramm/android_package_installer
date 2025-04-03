@@ -18,12 +18,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _installationStatus = '';
   String _installationName = '';
+  bool? _appInstalled;
   final TextEditingController _filePathFieldController = TextEditingController(text: '');
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +53,7 @@ class _MyAppState extends State<MyApp> {
                   ),
                   const SizedBox(height: 10),
                   Text('PackageManager installation status: $_installationStatus'),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 10),
                   Text('PackageManager installation name: $_installationName'),
                   const SizedBox(height: 30),
                   _button('Install apk file', () async {
@@ -77,6 +73,38 @@ class _MyAppState extends State<MyApp> {
                       }
                     }
                   }),
+                  const SizedBox(height: 10),
+                  _button("Get APK Package Name", () async {
+                    if (_filePathFieldController.text.isNotEmpty) {
+                      setState(() {
+                        _installationName = '';
+                      });
+                      try {
+                        final name = await AndroidPackageInstaller.getPackageNameFromApk(_filePathFieldController.text);
+                          setState(() {
+                            _installationName = name ?? '';
+                          });
+                      } on PlatformException {
+                        print('Error at Platform. Failed to get apk file name.');
+                      }
+                    }
+                  }),
+                  const SizedBox(height: 10),
+                  _button("Check App installed", () async {
+                    if (_filePathFieldController.text.isNotEmpty) {
+                      setState(() {
+                        _appInstalled = null;
+                      });
+                      try {
+                        final installed = await AndroidPackageInstaller.isApkInstalled(_filePathFieldController.text);
+                        setState(() => _appInstalled = installed);
+                      } on PlatformException {
+                        print('Error at Platform. Failed to get apk file name.');
+                      }
+                    }
+                  }),
+                  const SizedBox(height: 10),
+                  Text('Is app already installed: $_appInstalled'),
                   const Spacer(),
                   SizedBox(
                     child: Column(children: [

@@ -18,4 +18,14 @@ class MethodChannelAndroidPackageInstaller extends AndroidPackageInstallerPlatfo
       return AppInstallResult.fromMap(resMap);
     }
   }
+
+  @override
+  Future<String?> getPackageNameFromApk(String path) async {
+    return await methodChannel.invokeMethod<String?>('getApkPackageName', path);
+  }
+
+  @override
+  Future<bool> isAppInstalled(String packageName) async {
+    return await methodChannel.invokeMethod<bool>('isAppInstalled', packageName) ?? false;
+  }
 }

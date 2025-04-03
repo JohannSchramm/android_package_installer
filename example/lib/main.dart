@@ -105,6 +105,20 @@ class _MyAppState extends State<MyApp> {
                   }),
                   const SizedBox(height: 10),
                   Text('Is app already installed: $_appInstalled'),
+                  const SizedBox(height: 10),
+                  _button("Uninstall app", () async {
+                    if (_filePathFieldController.text.isNotEmpty) {
+                      try {
+                        final packageName = await AndroidPackageInstaller.getPackageNameFromApk(_filePathFieldController.text);
+                        if (packageName != null) {
+                          await AndroidPackageInstaller.uninstallApp(packageName);
+                          print("uninstalled app");
+                        }
+                      } catch(e) {
+                        print('Error while uninstalling');
+                      }
+                    }
+                  }),
                   const Spacer(),
                   SizedBox(
                     child: Column(children: [

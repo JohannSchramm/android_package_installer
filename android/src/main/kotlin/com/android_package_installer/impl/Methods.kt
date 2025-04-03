@@ -5,7 +5,7 @@ import com.android_package_installer.packageName
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
-internal class CustomMethodCallHandler(private val installer: Installer, private val appinfo: AppInfo) : MethodChannel.MethodCallHandler {
+internal class CustomMethodCallHandler(private val installer: Installer, private val appinfo: AppInfo, private val uninstaller: Uninstaller) : MethodChannel.MethodCallHandler {
     companion object {
         lateinit var callResult: MethodChannel.Result
         fun resultSuccess(data: Pair<Int, String?>) {
@@ -37,6 +37,11 @@ internal class CustomMethodCallHandler(private val installer: Installer, private
                 val apkFilePath = call.arguments.toString()
                 val name = appinfo.getPackageNameFromApk(apkFilePath)
                 result.success(name)
+            }
+            "uninstallApp" -> {
+                val packageName = call.arguments.toString()
+                uninstaller.uninstallPackage(packageName)
+                result.success(true)
             }
             else -> {
                 nothing()

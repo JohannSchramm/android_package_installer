@@ -14,6 +14,13 @@ class AndroidPackageInstaller {
     return await installer.installApk(apkFilePath);
   }
 
+  /// Uninstalls an app
+  /// [packageName] - the package name of the app. Example: com.example.app
+  static Future<void> uninstallApp(String packageName) async {
+    final installer = AndroidPackageInstallerPlatform.instance;
+    await installer.uninstallApk(packageName);
+  }
+
   /// Returns the package name of the apk file.
   /// [apkFilePath] - the path to the apk package file. Example: /sdcard/Download/app.apk
   /// Returns the package name of the apk file.

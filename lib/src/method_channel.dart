@@ -20,6 +20,11 @@ class MethodChannelAndroidPackageInstaller extends AndroidPackageInstallerPlatfo
   }
 
   @override
+  Future<void> uninstallApk(String packageName) async {
+    await methodChannel.invokeMethod<String?>('uninstallApp', packageName);
+  }
+
+  @override
   Future<String?> getPackageNameFromApk(String path) async {
     return await methodChannel.invokeMethod<String?>('getApkPackageName', path);
   }

@@ -1,5 +1,8 @@
 package com.android_package_installer
 
+import com.android_package_installer.impl.CustomMethodCallHandler
+import com.android_package_installer.impl.Installer
+import com.android_package_installer.impl.OnNewIntentListener
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterPluginBinding
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -10,16 +13,15 @@ const val packageName = "com.android_package_installer"
 const val installStatusUnknown = -2
 var packageInstalledAction = "${packageName}.content.SESSION_API_PACKAGE_INSTALLED"
 
-/** Plugin */
-class Plugin : FlutterPlugin, ActivityAware {
+/** PkginstallerPlugin */
+class PkginstallerPlugin : FlutterPlugin, ActivityAware {
     private lateinit var installer: Installer
     private lateinit var channel: MethodChannel
-    private val channelName: String = "android_package_installer"
 
-    override fun onAttachedToEngine(flutterPluginBinding: FlutterPluginBinding) {
-        channel = MethodChannel(flutterPluginBinding.binaryMessenger, channelName)
+    override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "android_package_installer")
         installer = Installer(flutterPluginBinding.applicationContext, null)
-        val handler = MethodCallHandler(installer)
+        val handler = CustomMethodCallHandler(installer)
         channel.setMethodCallHandler(handler)
     }
 
@@ -43,4 +45,3 @@ class Plugin : FlutterPlugin, ActivityAware {
     override fun onReattachedToActivityForConfigChanges(activityPluginBinding: ActivityPluginBinding) {
     }
 }
-

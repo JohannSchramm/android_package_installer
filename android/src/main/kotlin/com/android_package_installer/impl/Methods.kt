@@ -1,9 +1,10 @@
-package com.android_package_installer
+package com.android_package_installer.impl
 
+import com.android_package_installer.installStatusUnknown
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
-internal class MethodCallHandler(private val installer: Installer) : MethodChannel.MethodCallHandler {
+internal class CustomMethodCallHandler(private val installer: Installer) : MethodChannel.MethodCallHandler {
     companion object {
         lateinit var callResult: MethodChannel.Result
         fun resultSuccess(data: Pair<Int, String?>) {

@@ -9,7 +9,7 @@ flutter:
     platforms:
       android:
         package: com.android_package_installer
-        pluginClass: Plugin
+        pluginClass: PkginstallerPlugin
 
 dependencies:
   flutter:

@@ -1,4 +1,4 @@
-package com.android_package_installer
+package com.android_package_installer.impl
 
 import android.app.Activity
 import android.app.PendingIntent
@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
 import android.os.Build
+import com.android_package_installer.packageInstalledAction
 import java.io.FileInputStream
 import java.io.IOException
 

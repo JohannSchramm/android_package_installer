@@ -1,4 +1,4 @@
-package com.android_package_installer
+package com.android_package_installer.impl
 
 import android.annotation.TargetApi
 import android.app.Activity
@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageInstaller
 import android.os.Build
 import android.os.Bundle
+import com.android_package_installer.packageInstalledAction
 import io.flutter.plugin.common.PluginRegistry
 
 internal class OnNewIntentListener(private var activity: Activity?) : PluginRegistry.NewIntentListener {
@@ -23,7 +24,7 @@ internal class OnNewIntentListener(private var activity: Activity?) : PluginRegi
 
                 else -> {
                     val str = extras.getString(PackageInstaller.EXTRA_PACKAGE_NAME)
-                    MethodCallHandler.resultSuccess(Pair(status, str))
+                    CustomMethodCallHandler.resultSuccess(Pair(status, str))
                 }
             }
         }

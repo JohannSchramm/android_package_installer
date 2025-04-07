@@ -7,25 +7,22 @@ import io.flutter.plugin.common.MethodChannel
 
 internal class CustomMethodCallHandler(private val installer: Installer, private val appinfo: AppInfo, private val uninstaller: Uninstaller) : MethodChannel.MethodCallHandler {
     companion object {
-        lateinit var callResult: MethodChannel.Result
-        fun resultSuccess(data: Pair<Int, String?>) {
-            callResult.success(mapOf("code" to data.first, "package" to data.second))
-        }
+        lateinit var installcallResult: MethodChannel.Result
 
-        fun nothing() {
-            callResult.notImplemented()
+        fun resultSuccessInstall(data: Pair<Int, String?>) {
+            installcallResult.success(mapOf("code" to data.first, "package" to data.second))
         }
     }
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         when (call.method) {
             "installApk" -> {
-                callResult = result
+                installcallResult = result
                 try {
                     val apkFilePath = call.arguments.toString()
                     installer.installPackage(apkFilePath)
                 } catch (e: Exception) {
-                    resultSuccess(Pair(installStatusUnknown, null))
+                    resultSuccessInstall(Pair(installStatusUnknown, null))
                 }
             }
             "isAppInstalled" -> {
@@ -40,8 +37,7 @@ internal class CustomMethodCallHandler(private val installer: Installer, private
             }
             "uninstallApp" -> {
                 val packageName = call.arguments.toString()
-                uninstaller.uninstallPackage(packageName)
-                result.success(true)
+                uninstaller.uninstallPackage(packageName, result)
             }
             "launchApp" -> {
                 val packageName = call.arguments.toString()
@@ -49,7 +45,7 @@ internal class CustomMethodCallHandler(private val installer: Installer, private
                 result.success(launched)
             }
             else -> {
-                nothing()
+                result.notImplemented()
             }
         }
     }

@@ -111,6 +111,7 @@ class _MyAppState extends State<MyApp> {
                       try {
                         final packageName = await AndroidPackageInstaller.getPackageNameFromApk(_filePathFieldController.text);
                         if (packageName != null) {
+                          print("uninstalling app");
                           await AndroidPackageInstaller.uninstallApp(packageName);
                           print("uninstalled app");
                         }

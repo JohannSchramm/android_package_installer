@@ -19,6 +19,7 @@ class _MyAppState extends State<MyApp> {
   String _installationStatus = '';
   String _installationName = '';
   bool? _appInstalled;
+  String _appInfo = '';
   final TextEditingController _filePathFieldController = TextEditingController(text: '');
 
   @override
@@ -94,17 +95,24 @@ class _MyAppState extends State<MyApp> {
                     if (_filePathFieldController.text.isNotEmpty) {
                       setState(() {
                         _appInstalled = null;
+                        _appInfo = '';
                       });
                       try {
-                        final installed = await AndroidPackageInstaller.isApkInstalled(_filePathFieldController.text);
-                        setState(() => _appInstalled = installed);
+                        final name = await AndroidPackageInstaller.getPackageNameFromApk(_filePathFieldController.text);
+                        if (name != null) {
+                          final info = await AndroidPackageInstaller.getAppInfo(name);
+                          setState(() {
+                            _appInstalled = info != null;
+                            _appInfo = "${info?.packageName}; ${info?.versionName}; ${info?.installTime}";
+                          });
+                        }
                       } on PlatformException {
                         print('Error at Platform. Failed to get apk file name.');
                       }
                     }
                   }),
                   const SizedBox(height: 10),
-                  Text('Is app already installed: $_appInstalled'),
+                  Text('App Info: $_appInstalled; $_appInfo'),
                   const SizedBox(height: 10),
                   _button("Uninstall app", () async {
                     if (_filePathFieldController.text.isNotEmpty) {

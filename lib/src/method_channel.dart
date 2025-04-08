@@ -1,4 +1,5 @@
-import 'package:android_package_installer/src/install_result.dart';
+import 'package:android_package_installer/model/package_app_info.dart';
+import 'package:android_package_installer/model/package_install_result.dart';
 import 'package:flutter/services.dart';
 
 import 'installer_platform.dart';
@@ -7,7 +8,7 @@ class MethodChannelAndroidPackageInstaller extends AndroidPackageInstallerPlatfo
   final methodChannel = const MethodChannel('android_package_installer');
 
   @override
-  Future<AppInstallResult> installApk(String path) async {
+  Future<PackageInstallResult> installApk(String path) async {
     final resMap = await methodChannel.invokeMethod<Map<dynamic, dynamic>>('installApk', path);
     if (resMap == null) {
       throw PlatformException(
@@ -15,7 +16,7 @@ class MethodChannelAndroidPackageInstaller extends AndroidPackageInstallerPlatfo
         message: 'Installation failed',
       );
     } else {
-      return AppInstallResult.fromMap(resMap);
+      return PackageInstallResult.fromMap(resMap);
     }
   }
 
@@ -30,8 +31,13 @@ class MethodChannelAndroidPackageInstaller extends AndroidPackageInstallerPlatfo
   }
 
   @override
-  Future<bool> isAppInstalled(String packageName) async {
-    return await methodChannel.invokeMethod<bool>('isAppInstalled', packageName) ?? false;
+  Future<PackageAppInfo?> getAppInfo(String packageName) async {
+    final resMap =  await methodChannel.invokeMethod<Map<dynamic, dynamic>>('getAppInfo', packageName);
+    if (resMap != null) {
+      return PackageAppInfo.fromMap(resMap);
+    } else {
+      return null;
+    }
   }
 
   @override

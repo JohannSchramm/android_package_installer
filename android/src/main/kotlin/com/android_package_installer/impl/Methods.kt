@@ -25,10 +25,19 @@ internal class CustomMethodCallHandler(private val installer: Installer, private
                     resultSuccessInstall(Pair(installStatusUnknown, null))
                 }
             }
-            "isAppInstalled" -> {
+            "getAppInfo" -> {
                 val packageName = call.arguments.toString()
-                val res = appinfo.isAppInstalled(packageName)
-                result.success(res)
+                val res = appinfo.getAppInfo(packageName)
+                if (res != null) {
+                    val resMap = mapOf(
+                        "packageName" to res.packageName,
+                        "versionName" to res.versionName,
+                        "installTime" to res.installTime,
+                        )
+                    result.success(resMap)
+                } else {
+                    result.success(null)
+                }
             }
             "getApkPackageName" -> {
                 val apkFilePath = call.arguments.toString()

@@ -26,8 +26,6 @@ internal class Uninstaller(private val context: Context, private var activity: A
                 registerPackageChangeReceiver(act, packageName, result)
 
                 act.startActivity(intent)
-
-                println(act.localClassName)
             } catch (e: Exception) {
                 result.success(false)
                 throw e

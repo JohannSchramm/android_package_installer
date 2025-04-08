@@ -1,4 +1,5 @@
-import 'package:android_package_installer/src/install_result.dart';
+import 'package:android_package_installer/model/package_app_info.dart';
+import 'package:android_package_installer/model/package_install_result.dart';
 import 'package:android_package_installer/src/method_channel.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
@@ -17,13 +18,13 @@ abstract class AndroidPackageInstallerPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<AppInstallResult> installApk(String path);
+  Future<PackageInstallResult> installApk(String path);
 
   Future<void> uninstallApk(String packageName);
 
   Future<String?> getPackageNameFromApk(String path);
 
-  Future<bool> isAppInstalled(String packageName);
+  Future<PackageAppInfo?> getAppInfo(String packageName);
 
   Future<bool> launchApp(String packageName);
 }

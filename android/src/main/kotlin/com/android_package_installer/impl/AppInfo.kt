@@ -12,18 +12,24 @@ import com.android_package_installer.packageInstalledAction
 import java.io.FileInputStream
 import java.io.IOException
 
+data class AppInfoData(val packageName: String, val versionName: String?, val installTime: Long)
+
 internal class AppInfo(private val context: Context, private var activity: Activity?) {
     fun setActivity(activity: Activity?) {
         this.activity = activity
     }
 
-    fun isAppInstalled(packageName: String): Boolean {
-        val manager = activity?.packageManager ?: return false
+    fun getAppInfo(packageName: String): AppInfoData? {
+        val manager = activity?.packageManager ?: return null
         return try {
-            manager.getPackageInfo(packageName, 0)
-            true
+            val appInfo = manager.getPackageInfo(packageName, 0)
+            return AppInfoData(
+                appInfo.packageName,
+                appInfo.versionName,
+                appInfo.firstInstallTime,
+            )
         } catch (e: PackageManager.NameNotFoundException) {
-            false
+            null
         }
     }
 
